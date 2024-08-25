@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "node index.js",
+    "build": "node seed.js && node index.js",
     "start-dev": "nodemon index.js",
     "data:import": "node seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
