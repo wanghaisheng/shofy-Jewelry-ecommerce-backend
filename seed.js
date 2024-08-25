@@ -26,9 +26,12 @@ const reviewsData = require('./utils/reviews');
 const Admin = require('./model/Admin');
 const adminData = require('./utils/admin');
 
-connectDB();
+const mongoose = require('mongoose');
+
 const importData = async () => {
   try {
+    console.log('Starting data import...');
+
     await Brand.deleteMany();
     await Brand.insertMany(brandData);
 
@@ -53,12 +56,10 @@ const importData = async () => {
     await Admin.deleteMany();
     await Admin.insertMany(adminData);
 
-    console.log('data inserted successfully!');
-    process.exit();
+    console.log('Data import completed.');
   } catch (error) {
-    console.log('error', error);
-    process.exit(1);
+    console.error('Error during data import:', error);
   }
 };
 
-importData();
+module.exports = { importData };

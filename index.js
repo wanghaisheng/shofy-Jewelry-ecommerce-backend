@@ -57,24 +57,17 @@ app.use("/api/admin", (req, res, next) => {
 // root route
 app.get("/", (req, res) => res.send("Apps worked successfully"));
 
-app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+// Add a test route
+app.get('/test', (req, res) => {
+  res.json({ message: 'Test route working' });
+});
 
 // global error handler
 app.use(globalErrorHandler);
 //* handle not found
 app.use((req, res, next) => {
-  console.log(`Received request: ${req.method} ${req.url}`);
-
-  res.status(404).json({
-    success: false,
-    message: 'Not Found',
-    errorMessages: [
-      {
-        path: req.originalUrl,
-        message: 'API Not Found',
-      },
-    ],
-  });
+  console.log(`Unmatched route in index.js: ${req.method} ${req.originalUrl}`);
+  res.status(404).json({ message: "Route not found" });
   next();
 });
 
