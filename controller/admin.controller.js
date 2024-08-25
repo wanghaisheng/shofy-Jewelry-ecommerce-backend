@@ -41,10 +41,9 @@ const registerAdmin = async (req, res,next) => {
 };
 // login admin
 const loginAdmin = async (req, res,next) => {
-  // console.log(req.body)
+  console.log("loginAdmin function called");
   try {
     const admin = await Admin.findOne({ email: req.body.email });
-    // console.log(admin)
     if (admin && bcrypt.compareSync(req.body.password, admin.password)) {
       const token = generateToken(admin);
       res.send({
@@ -69,7 +68,6 @@ const loginAdmin = async (req, res,next) => {
 const forgetPassword = async (req, res,next) => {
   try {
     const { email } = req.body;
-    // console.log('email--->',email)
     const admin = await Admin.findOne({ email: email });
     if (!admin) {
       return res.status(404).send({
@@ -154,7 +152,6 @@ const changePassword = async (req,res,next) => {
   try {
     const {email,oldPass,newPass} = req.body || {};
     const admin = await Admin.findOne({ email: email });
-    // Check if the admin exists
     if (!admin) {
       return res.status(404).json({ message: "Admin not found" });
     }
@@ -234,7 +231,6 @@ const getAllStaff = async (req, res,next) => {
 };
 // getStaffById
 const getStaffById = async (req, res,next) => {
-  // console.log('getStaffById',req.params.id)
   try {
     const admin = await Admin.findById(req.params.id);
     res.send(admin);

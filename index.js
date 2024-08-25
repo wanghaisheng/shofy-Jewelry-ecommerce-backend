@@ -28,6 +28,12 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Add this near the top of your file, after your imports
+app.use((req, res, next) => {
+  console.log(`Received request: ${req.method} ${req.url}`);
+  next();
+});
+
 // connect database
 connectDB();
 
@@ -41,7 +47,12 @@ app.use("/api/coupon", couponRoutes);
 app.use("/api/user-order", userOrderRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/cloudinary", cloudinaryRoutes);
-app.use("/api/admin", adminRoutes);
+
+// Modify your admin routes to include logging
+app.use("/api/admin", (req, res, next) => {
+  console.log("Admin route accessed:", req.method, req.url);
+  next();
+}, adminRoutes);
 
 // root route
 app.get("/", (req, res) => res.send("Apps worked successfully"));
@@ -52,6 +63,8 @@ app.listen(PORT, () => console.log(`server running on port ${PORT}`));
 app.use(globalErrorHandler);
 //* handle not found
 app.use((req, res, next) => {
+  console.log(`Received request: ${req.method} ${req.url}`);
+
   res.status(404).json({
     success: false,
     message: 'Not Found',
